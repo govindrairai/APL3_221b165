@@ -1,0 +1,234 @@
+
+N:\>docker -- version
+Client:
+ Version:           28.0.1
+ API version:       1.48
+ Go version:        go1.23.6
+ Git commit:        068a01e
+ Built:             Wed Feb 26 10:41:52 2025
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+
+Server: Docker Desktop 4.39.0 (184744)
+ Engine:
+  Version:          28.0.1
+  API version:      1.48 (minimum version 1.24)
+  Go version:       go1.23.6
+  Git commit:       bbd0a17
+  Built:            Wed Feb 26 10:41:16 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.25
+  GitCommit:        bcc810d6b9066471b0b6fa75f557a15a1cbf31bb
+ runc:
+  Version:          1.2.4
+  GitCommit:        v1.2.4-0-g6c52b3f
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+N:\>docker pull hello-world
+Using default tag: latest
+latest: Pulling from library/hello-world
+Digest: sha256:fc08e727181e2668370f47db6319815c279ed887e2f01be96b94106bc2781430
+Status: Downloaded newer image for hello-world:latest
+docker.io/library/hello-world:latest
+
+N:\>docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+
+N:\>docker -it ubuntu
+unknown shorthand flag: 'i' in -it
+
+Usage:  docker [OPTIONS] COMMAND [ARG...]
+
+Run 'docker --help' for more information
+
+N:\>docker run -it ubuntu
+root@e7958b306596:/# ls
+bin  boot  dev  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@e7958b306596:/# mkdir file1
+root@e7958b306596:/# ls
+bin  boot  dev  etc  file1  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@e7958b306596:/# cd file1
+root@e7958b306596:/file1# touch file1.js
+root@e7958b306596:/file1# ls
+file1.js
+root@e7958b306596:/file1# cd
+root@e7958b306596:~# cd
+root@e7958b306596:~# exit
+exit
+
+N:\>docker network ls
+NETWORK ID     NAME            DRIVER    SCOPE
+c301c6b3ec74   bridge          bridge    local
+3d726a3de452   host            host      local
+26c80e965b1e   mongo-network   bridge    local
+ae6e3a337d23   none            null      local
+
+N:\>docker network create mongo-network
+Error response from daemon: network with name mongo-network already exists
+
+N:\>docker run -d -p 27017:27017 --name mongo --network mongo -network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+unknown shorthand flag: 'n' in -network
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker run --help' for more information
+
+N:\>docker run -d-p 27017:27017 --name mongo --network mongo -network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+unknown shorthand flag: '-' in --p
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker run --help' for more information
+
+N:\>docker run -d -p 27017:27017 --name mongo --network mongo -network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+unknown shorthand flag: 'n' in -network
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker run --help' for more information
+
+N:\>docker run -d -p 27017:27017 --name mongo --network mongo-network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=admin mongo
+Unable to find image 'mongo:latest' locally
+latest: Pulling from library/mongo
+7e4d144a0672: Pull complete
+2726e237d1a3: Pull complete
+8fc21ef9255d: Pull complete
+90ade5227b11: Pull complete
+29fee425ac1e: Pull complete
+adf7a2b7606d: Pull complete
+66eecf3d03b3: Pull complete
+1a08ed22982f: Pull complete
+Digest: sha256:688d9e755d2b6093cf00ac553dd37ece1562400558515c977f57b3cc8df4eeb6
+Status: Downloaded newer image for mongo:latest
+c6cf1cf6414a5a8b51ad337500839bdea126b3ede1c6fa0ab9825baf82ffe573
+
+N:\>docker network inspect mongo-network
+[
+    {
+        "Name": "mongo-network",
+        "Id": "26c80e965b1e2289dd944f53dc8b68c19603e73667e634a8211619f0db5fda52",
+        "Created": "2025-04-08T07:22:32.152073113Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "c6cf1cf6414a5a8b51ad337500839bdea126b3ede1c6fa0ab9825baf82ffe573": {
+                "Name": "mongo",
+                "EndpointID": "80e7ff989afd7e07ce1c1e0046453397ae9d12948cd7cf81b2f3f7dffa0a3bff",
+                "MacAddress": "d2:d5:3f:8c:fa:bc",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+N:\>docker run -d -p 8081:8081 --name mongo-express --network mongo-network -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=admin -e ME_CONFIG_MONGODB_URL="mongodb://admin:admin@mongo:27017" mongo-express
+Unable to find image 'mongo-express:latest' locally
+latest: Pulling from library/mongo-express
+5189255e31c8: Pull complete
+619be1103602: Pull complete
+7e9a007eb24b: Pull complete
+0bf3571b6cd7: Pull complete
+d8305ae32c95: Pull complete
+9f7f59574f7d: Pull complete
+88f4f8a6bc8d: Pull complete
+45b24ec126f9: Pull complete
+Digest: sha256:1b23d7976f0210dbec74045c209e52fbb26d29b2e873d6c6fa3d3f0ae32c2a64
+Status: Downloaded newer image for mongo-express:latest
+327a80f516b5341d8d5ec824679c30187deaac4b219565f402bdb5962390b122
+
+N:\>docker network inspect mongo-network
+[
+    {
+        "Name": "mongo-network",
+        "Id": "26c80e965b1e2289dd944f53dc8b68c19603e73667e634a8211619f0db5fda52",
+        "Created": "2025-04-08T07:22:32.152073113Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "327a80f516b5341d8d5ec824679c30187deaac4b219565f402bdb5962390b122": {
+                "Name": "mongo-express",
+                "EndpointID": "2e4e6bc9475d4fa1331eb2b76fb65d0883dc75884ce0c62ce542289c8fcfaee1",
+                "MacAddress": "b6:51:e2:e8:6d:47",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "c6cf1cf6414a5a8b51ad337500839bdea126b3ede1c6fa0ab9825baf82ffe573": {
+                "Name": "mongo",
+                "EndpointID": "80e7ff989afd7e07ce1c1e0046453397ae9d12948cd7cf81b2f3f7dffa0a3bff",
+                "MacAddress": "d2:d5:3f:8c:fa:bc",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+
+N:\>
